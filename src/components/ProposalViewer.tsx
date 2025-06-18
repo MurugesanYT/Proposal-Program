@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { Heart, Sparkles, ArrowLeft, MessageCircle, CheckCircle, XCircle } from 'lucide-react';
+import { Heart, Sparkles, ArrowLeft, MessageCircle, CheckCircle, XCircle, Ring, Gift } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalViewerProps {
@@ -54,20 +53,37 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
   const getProposalMessage = () => {
     const proposerEmoji = getGenderEmoji(proposal.proposerGender);
     const partnerEmoji = getGenderEmoji(proposal.partnerGender);
+    const isMarriage = proposal.proposalType === 'marriage';
     
-    const messages = {
-      'male-female': `My dearest ${proposal.partnerName}, you are the woman of my dreams, my soulmate, my everything. Will you marry me and make me the happiest man alive? 💍`,
-      'female-male': `My darling ${proposal.partnerName}, you are my knight in shining armor, my protector, my love. Will you take my hand in marriage and be my husband forever? 💍`,
-      'male-male': `My beloved ${proposal.partnerName}, you are my best friend, my partner, my heart. Will you marry me and start this beautiful journey together as husbands? 💍`,
-      'female-female': `My beautiful ${proposal.partnerName}, you are my sunshine, my happiness, my forever love. Will you marry me and be my wife for all eternity? 💍`,
-      'non-binary': `My amazing ${proposal.partnerName}, you are my perfect match, my chosen family, my heart's desire. Will you marry me and create our own beautiful love story together? 💍`,
-    };
+    if (isMarriage) {
+      const messages = {
+        'male-female': `My dearest ${proposal.partnerName}, you are the woman of my dreams, my soulmate, my everything. Will you marry me and make me the happiest man alive? 💍`,
+        'female-male': `My darling ${proposal.partnerName}, you are my knight in shining armor, my protector, my love. Will you take my hand in marriage and be my husband forever? 💍`,
+        'male-male': `My beloved ${proposal.partnerName}, you are my best friend, my partner, my heart. Will you marry me and start this beautiful journey together as husbands? 💍`,
+        'female-female': `My beautiful ${proposal.partnerName}, you are my sunshine, my happiness, my forever love. Will you marry me and be my wife for all eternity? 💍`,
+        'non-binary': `My amazing ${proposal.partnerName}, you are my perfect match, my chosen family, my heart's desire. Will you marry me and create our own beautiful love story together? 💍`,
+      };
 
-    const key = proposal.partnerGender === 'non-binary' || proposal.proposerGender === 'non-binary' 
-      ? 'non-binary' 
-      : `${proposal.proposerGender}-${proposal.partnerGender}`;
-    
-    return messages[key] || messages['non-binary'];
+      const key = proposal.partnerGender === 'non-binary' || proposal.proposerGender === 'non-binary' 
+        ? 'non-binary' 
+        : `${proposal.proposerGender}-${proposal.partnerGender}`;
+      
+      return messages[key] || messages['non-binary'];
+    } else {
+      const loveMessages = {
+        'male-female': `My beautiful ${proposal.partnerName}, I want you to know that you mean everything to me. You are the love of my life, and I want to spend every moment making you happy. I love you more than words can express! 💕`,
+        'female-male': `My wonderful ${proposal.partnerName}, I need you to know how deeply I love you. You are my strength, my joy, and my heart's greatest treasure. I love you with all my soul! 💕`,
+        'male-male': `My incredible ${proposal.partnerName}, you are my best friend, my partner, and the love of my life. I want to share every adventure with you. I love you completely! 💕`,
+        'female-female': `My darling ${proposal.partnerName}, you are my sunshine, my happiness, and my everything. I want to love you and cherish you always. I love you beyond measure! 💕`,
+        'non-binary': `My amazing ${proposal.partnerName}, you are my perfect match, my heart's desire, and my greatest love. I want to celebrate our love every single day. I love you infinitely! 💕`,
+      };
+
+      const key = proposal.partnerGender === 'non-binary' || proposal.proposerGender === 'non-binary' 
+        ? 'non-binary' 
+        : `${proposal.proposerGender}-${proposal.partnerGender}`;
+      
+      return loveMessages[key] || loveMessages['non-binary'];
+    }
   };
 
   const handleResponse = async (responseType: 'accept' | 'reject') => {
@@ -134,6 +150,8 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
     );
   }
 
+  const isMarriage = proposal.proposalType === 'marriage';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-100 via-pink-50 to-purple-100 flex items-center justify-center p-4">
       <div className="absolute inset-0 overflow-hidden">
@@ -147,16 +165,20 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
           <div className="flex justify-center mb-6">
             <div className="relative">
               <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                <Heart className="w-12 h-12 text-white animate-pulse" />
+                {isMarriage ? (
+                  <Ring className="w-12 h-12 text-white animate-pulse" />
+                ) : (
+                  <Heart className="w-12 h-12 text-white animate-pulse" />
+                )}
               </div>
               <Sparkles className="w-8 h-8 text-yellow-300 absolute -top-2 -right-2 animate-pulse" />
             </div>
           </div>
           <CardTitle className="text-5xl font-bold mb-4">
-            💕 A Special Proposal 💕
+            {isMarriage ? '💍 A Marriage Proposal 💍' : '💕 A Love Declaration 💕'}
           </CardTitle>
           <p className="text-2xl font-light">
-            Dear {proposal.partnerName}, {proposal.proposerName} has something incredibly special to ask you...
+            Dear {proposal.partnerName}, {proposal.proposerName} has something incredibly special to {isMarriage ? 'ask' : 'tell'} you...
           </p>
         </CardHeader>
 
@@ -195,7 +217,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
                     className="h-16 text-xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
                   >
                     <CheckCircle className="w-8 h-8 mr-3" />
-                    YES, I DO! 💍
+                    {isMarriage ? 'YES, I DO! 💍' : 'I LOVE YOU TOO! 💕'}
                   </Button>
                   
                   <Button

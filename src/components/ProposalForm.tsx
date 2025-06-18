@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,7 +5,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Heart, Sparkles, Users } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Heart, Sparkles, Users, Ring, Gift } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalFormProps {
@@ -18,6 +18,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
   const [partnerName, setPartnerName] = useState('');
   const [proposerGender, setProposerGender] = useState('');
   const [partnerGender, setPartnerGender] = useState('');
+  const [proposalType, setProposalType] = useState('marriage');
   const [customMessage, setCustomMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -25,7 +26,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!proposerName || !partnerName || !proposerGender || !partnerGender) {
+    if (!proposerName || !partnerName || !proposerGender || !partnerGender || !proposalType) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields",
@@ -43,6 +44,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
       partnerName,
       proposerGender,
       partnerGender,
+      proposalType,
       customMessage,
       createdAt: new Date().toISOString(),
       status: 'pending'
@@ -56,7 +58,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
       onProposalCreated(proposalData);
       toast({
         title: "💕 Proposal Created!",
-        description: "Your magical love proposal is ready to share!",
+        description: "Your magical proposal is ready to share!",
       });
     }, 2000);
   };
@@ -86,6 +88,29 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
         
         <CardContent className="space-y-8">
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <Label className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                <Gift className="w-5 h-5" />
+                Choose Your Proposal Type
+              </Label>
+              <RadioGroup value={proposalType} onValueChange={setProposalType}>
+                <div className="flex items-center space-x-2 p-4 border-2 border-pink-200 rounded-xl hover:border-pink-300 transition-colors">
+                  <RadioGroupItem value="marriage" id="marriage" />
+                  <Label htmlFor="marriage" className="flex items-center gap-2 cursor-pointer">
+                    <Ring className="w-5 h-5 text-pink-600" />
+                    <span className="text-lg">Marriage Proposal 💍</span>
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2 p-4 border-2 border-pink-200 rounded-xl hover:border-pink-300 transition-colors">
+                  <RadioGroupItem value="love" id="love" />
+                  <Label htmlFor="love" className="flex items-center gap-2 cursor-pointer">
+                    <Heart className="w-5 h-5 text-red-600" />
+                    <span className="text-lg">Love Declaration 💕</span>
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="proposerName" className="text-lg font-semibold text-gray-700">
@@ -178,7 +203,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
               ) : (
                 <div className="flex items-center gap-3">
                   <Heart className="w-6 h-6" />
-                  Create My Love Proposal
+                  Create My {proposalType === 'marriage' ? 'Marriage Proposal' : 'Love Declaration'}
                   <Sparkles className="w-6 h-6" />
                 </div>
               )}

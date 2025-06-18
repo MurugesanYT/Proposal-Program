@@ -9,13 +9,60 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      proposals: {
+        Row: {
+          created_at: string
+          custom_message: string | null
+          id: string
+          partner_gender: string
+          partner_name: string
+          proposer_gender: string
+          proposer_name: string
+          responded_at: string | null
+          response_message: string | null
+          status: string
+          unique_slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          custom_message?: string | null
+          id?: string
+          partner_gender: string
+          partner_name: string
+          proposer_gender: string
+          proposer_name: string
+          responded_at?: string | null
+          response_message?: string | null
+          status?: string
+          unique_slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          custom_message?: string | null
+          id?: string
+          partner_gender?: string
+          partner_name?: string
+          proposer_gender?: string
+          proposer_name?: string
+          responded_at?: string | null
+          response_message?: string | null
+          status?: string
+          unique_slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_proposal_slug: {
+        Args: { partner_name: string; proposal_id: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
