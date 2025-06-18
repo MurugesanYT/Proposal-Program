@@ -1,14 +1,14 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Heart, Sparkles, Users, Circle, Gift } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Heart, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import ProposalFormHeader from './ProposalFormHeader';
+import ProposalTypeSelector from './ProposalTypeSelector';
+import PersonalInfoForm from './PersonalInfoForm';
+import CustomMessageInput from './CustomMessageInput';
+import ProposalFormContainer from './ProposalFormContainer';
 
 interface ProposalFormProps {
   onProposalCreated: (proposalData: any) => void;
@@ -65,131 +65,32 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-red-50 to-purple-100 flex items-center justify-center p-4">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-      </div>
-      
-      <Card className="w-full max-w-2xl relative z-10 shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
-        <CardHeader className="text-center pb-8">
-          <div className="flex justify-center mb-4">
-            <div className="relative">
-              <Heart className="w-16 h-16 text-red-500 animate-pulse" />
-              <Sparkles className="w-8 h-8 text-yellow-400 absolute -top-2 -right-2 animate-pulse" />
-            </div>
-          </div>
-          <CardTitle className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-            Create Your Perfect Proposal
-          </CardTitle>
-          <p className="text-lg text-gray-600 mt-2">
-            Craft a magical moment that will be remembered forever ✨
-          </p>
-        </CardHeader>
+    <ProposalFormContainer>
+      <Card className="border-0 bg-transparent shadow-none">
+        <ProposalFormHeader />
         
         <CardContent className="space-y-8">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              <Label className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-                <Gift className="w-5 h-5" />
-                Choose Your Proposal Type
-              </Label>
-              <RadioGroup value={proposalType} onValueChange={setProposalType}>
-                <div className="flex items-center space-x-2 p-4 border-2 border-pink-200 rounded-xl hover:border-pink-300 transition-colors">
-                  <RadioGroupItem value="marriage" id="marriage" />
-                  <Label htmlFor="marriage" className="flex items-center gap-2 cursor-pointer">
-                    <Circle className="w-5 h-5 text-pink-600" />
-                    <span className="text-lg">Marriage Proposal 💍</span>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-4 border-2 border-pink-200 rounded-xl hover:border-pink-300 transition-colors">
-                  <RadioGroupItem value="love" id="love" />
-                  <Label htmlFor="love" className="flex items-center gap-2 cursor-pointer">
-                    <Heart className="w-5 h-5 text-red-600" />
-                    <span className="text-lg">Love Declaration 💕</span>
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
+            <ProposalTypeSelector
+              proposalType={proposalType}
+              onProposalTypeChange={setProposalType}
+            />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="proposerName" className="text-lg font-semibold text-gray-700">
-                  Your Name 💖
-                </Label>
-                <Input
-                  id="proposerName"
-                  value={proposerName}
-                  onChange={(e) => setProposerName(e.target.value)}
-                  placeholder="Enter your beautiful name"
-                  className="h-12 text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="partnerName" className="text-lg font-semibold text-gray-700">
-                  Their Name 💕
-                </Label>
-                <Input
-                  id="partnerName"
-                  value={partnerName}
-                  onChange={(e) => setPartnerName(e.target.value)}
-                  placeholder="Your special someone's name"
-                  className="h-12 text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl"
-                />
-              </div>
-            </div>
+            <PersonalInfoForm
+              proposerName={proposerName}
+              partnerName={partnerName}
+              proposerGender={proposerGender}
+              partnerGender={partnerGender}
+              onProposerNameChange={setProposerName}
+              onPartnerNameChange={setPartnerName}
+              onProposerGenderChange={setProposerGender}
+              onPartnerGenderChange={setPartnerGender}
+            />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Your Gender
-                </Label>
-                <Select value={proposerGender} onValueChange={setProposerGender}>
-                  <SelectTrigger className="h-12 text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl">
-                    <SelectValue placeholder="Select your gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Male 👨</SelectItem>
-                    <SelectItem value="female">Female 👩</SelectItem>
-                    <SelectItem value="non-binary">Non-binary 🌟</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Their Gender
-                </Label>
-                <Select value={partnerGender} onValueChange={setPartnerGender}>
-                  <SelectTrigger className="h-12 text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl">
-                    <SelectValue placeholder="Select their gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Male 👨</SelectItem>
-                    <SelectItem value="female">Female 👩</SelectItem>
-                    <SelectItem value="non-binary">Non-binary 🌟</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="customMessage" className="text-lg font-semibold text-gray-700">
-                Your Heart's Message 💌 (Optional)
-              </Label>
-              <Textarea
-                id="customMessage"
-                value={customMessage}
-                onChange={(e) => setCustomMessage(e.target.value)}
-                placeholder="Write something special from your heart... Tell them why they mean the world to you!"
-                className="min-h-[120px] text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl resize-none"
-                maxLength={500}
-              />
-              <p className="text-sm text-gray-500">{customMessage.length}/500 characters</p>
-            </div>
+            <CustomMessageInput
+              customMessage={customMessage}
+              onCustomMessageChange={setCustomMessage}
+            />
 
             <Button
               type="submit"
@@ -212,7 +113,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
           </form>
         </CardContent>
       </Card>
-    </div>
+    </ProposalFormContainer>
   );
 };
 

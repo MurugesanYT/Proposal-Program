@@ -1,9 +1,7 @@
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Heart, Copy, Share2, Eye, Clock, MessageCircle, CheckCircle, XCircle, Circle, Gift, Star, Sparkles2, PartyPopper, Zap } from 'lucide-react';
+import { Copy, Eye, Heart, Share2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalLinkProps {
@@ -123,7 +121,7 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
                 )}
               </div>
               <div className="absolute -top-3 -right-3 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce">
-                <Sparkles2 className="w-6 h-6 text-yellow-700" />
+                <Sparkles className="w-6 h-6 text-yellow-700" />
               </div>
               <div className="absolute -bottom-2 -left-2 w-8 h-8 bg-pink-400 rounded-full flex items-center justify-center animate-pulse">
                 <Star className="w-4 h-4 text-white" />
@@ -225,7 +223,7 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
             <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-3">
               <Share2 className="w-7 h-7 text-emerald-600" />
               Your Magical Proposal Link
-              <Sparkles2 className="w-7 h-7 text-blue-600 animate-pulse" />
+              <Sparkles className="w-7 h-7 text-blue-600 animate-pulse" />
             </h3>
             <div className="flex flex-col sm:flex-row gap-4">
               <Input
