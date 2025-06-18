@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Heart, Sparkles, Users, Ring, Gift } from 'lucide-react';
+import { Heart, Sparkles, Users, Circle, Gift } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalFormProps {
@@ -97,7 +98,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
                 <div className="flex items-center space-x-2 p-4 border-2 border-pink-200 rounded-xl hover:border-pink-300 transition-colors">
                   <RadioGroupItem value="marriage" id="marriage" />
                   <Label htmlFor="marriage" className="flex items-center gap-2 cursor-pointer">
-                    <Ring className="w-5 h-5 text-pink-600" />
+                    <Circle className="w-5 h-5 text-pink-600" />
                     <span className="text-lg">Marriage Proposal 💍</span>
                   </Label>
                 </div>

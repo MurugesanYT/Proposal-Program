@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { Heart, Sparkles, ArrowLeft, MessageCircle, CheckCircle, XCircle, Ring, Gift } from 'lucide-react';
+import { Heart, Sparkles, ArrowLeft, MessageCircle, CheckCircle, XCircle, Circle, Gift } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalViewerProps {
@@ -166,7 +167,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
             <div className="relative">
               <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                 {isMarriage ? (
-                  <Ring className="w-12 h-12 text-white animate-pulse" />
+                  <Circle className="w-12 h-12 text-white animate-pulse" />
                 ) : (
                   <Heart className="w-12 h-12 text-white animate-pulse" />
                 )}

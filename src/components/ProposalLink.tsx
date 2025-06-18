@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Heart, Copy, Share2, Eye, Clock, MessageCircle, CheckCircle, XCircle, Ring, Gift } from 'lucide-react';
+import { Heart, Copy, Share2, Eye, Clock, MessageCircle, CheckCircle, XCircle, Circle, Gift } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalLinkProps {
@@ -107,7 +108,7 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
             <div className="relative">
               <div className="w-20 h-20 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full flex items-center justify-center animate-pulse">
                 {isMarriage ? (
-                  <Ring className="w-10 h-10 text-white" />
+                  <Circle className="w-10 h-10 text-white" />
                 ) : (
                   <Heart className="w-10 h-10 text-white" />
                 )}
