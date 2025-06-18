@@ -1,7 +1,9 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Copy, Eye, Heart, Share2, Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Copy, Eye, Heart, Share2, Sparkles, CheckCircle, XCircle, Clock, MessageCircle, Zap, Star, PartyPopper, Gift, Circle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalLinkProps {
