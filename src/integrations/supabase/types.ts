@@ -16,6 +16,7 @@ export type Database = {
           id: string
           partner_gender: string
           partner_name: string
+          proposal_type: string
           proposer_gender: string
           proposer_name: string
           responded_at: string | null
@@ -30,6 +31,7 @@ export type Database = {
           id?: string
           partner_gender: string
           partner_name: string
+          proposal_type?: string
           proposer_gender: string
           proposer_name: string
           responded_at?: string | null
@@ -44,6 +46,7 @@ export type Database = {
           id?: string
           partner_gender?: string
           partner_name?: string
+          proposal_type?: string
           proposer_gender?: string
           proposer_name?: string
           responded_at?: string | null
