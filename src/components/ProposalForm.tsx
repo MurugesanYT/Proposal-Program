@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import ProposalFormHeader from './ProposalFormHeader';
 import ProposalTypeSelector from './ProposalTypeSelector';
 import PersonalInfoForm from './PersonalInfoForm';
@@ -24,7 +25,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!proposerName || !partnerName || !proposerGender || !partnerGender || !proposalType) {
@@ -38,30 +39,59 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
 
     setIsSubmitting(true);
     
-    const proposalId = Date.now().toString();
-    const proposalData = {
-      id: proposalId,
-      proposerName,
-      partnerName,
-      proposerGender,
-      partnerGender,
-      proposalType,
-      customMessage,
-      createdAt: new Date().toISOString(),
-      status: 'pending'
-    };
+    try {
+      const { data, error } = await supabase
+        .from('proposals')
+        .insert({
+          proposer_name: proposerName,
+          partner_name: partnerName,
+          proposer_gender: proposerGender,
+          partner_gender: partnerGender,
+          proposal_type: proposalType,
+          custom_message: customMessage || null,
+          status: 'pending'
+        })
+        .select()
+        .single();
 
-    // Store in localStorage for persistence
-    localStorage.setItem(`proposal_${proposalId}`, JSON.stringify(proposalData));
-    
-    setTimeout(() => {
-      setIsSubmitting(false);
+      if (error) {
+        console.error('Error creating proposal:', error);
+        toast({
+          title: "Error",
+          description: "Failed to create proposal. Please try again.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const proposalData = {
+        id: data.id,
+        proposerName: data.proposer_name,
+        partnerName: data.partner_name,
+        proposerGender: data.proposer_gender,
+        partnerGender: data.partner_gender,
+        proposalType: data.proposal_type,
+        customMessage: data.custom_message,
+        createdAt: data.created_at,
+        status: data.status,
+        uniqueSlug: data.unique_slug
+      };
+
       onProposalCreated(proposalData);
       toast({
         title: "💕 Proposal Created!",
         description: "Your magical proposal is ready to share!",
       });
-    }, 2000);
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

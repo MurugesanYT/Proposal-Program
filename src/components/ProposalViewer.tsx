@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import ProposalNotFound from './ProposalNotFound';
 import ProposalResponseComplete from './ProposalResponseComplete';
 import ProposalHeader from './ProposalHeader';
@@ -20,44 +21,126 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
   const [response, setResponse] = useState<'accept' | 'reject' | null>(null);
   const [reason, setReason] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
-    const proposalData = localStorage.getItem(`proposal_${proposalId}`);
-    if (proposalData) {
-      setProposal(JSON.parse(proposalData));
-    }
+    fetchProposal();
   }, [proposalId]);
 
-  if (!proposal) {
-    return <ProposalNotFound onBack={onBack} />;
-  }
+  const fetchProposal = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Try to fetch by unique_slug first
+      let { data, error } = await supabase
+        .from('proposals')
+        .select('*')
+        .eq('unique_slug', proposalId)
+        .maybeSingle();
+
+      // If not found by slug, try by id
+      if (!data && !error) {
+        const result = await supabase
+          .from('proposals')
+          .select('*')
+          .eq('id', proposalId)
+          .maybeSingle();
+        
+        data = result.data;
+        error = result.error;
+      }
+
+      if (error) {
+        console.error('Error fetching proposal:', error);
+        return;
+      }
+
+      if (data) {
+        const proposalData = {
+          id: data.id,
+          proposerName: data.proposer_name,
+          partnerName: data.partner_name,
+          proposerGender: data.proposer_gender,
+          partnerGender: data.partner_gender,
+          proposalType: data.proposal_type,
+          customMessage: data.custom_message,
+          createdAt: data.created_at,
+          status: data.status,
+          reason: data.response_message,
+          respondedAt: data.responded_at,
+          uniqueSlug: data.unique_slug
+        };
+        setProposal(proposalData);
+      }
+    } catch (error) {
+      console.error('Unexpected error fetching proposal:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleResponse = async (responseType: 'accept' | 'reject') => {
     setResponse(responseType);
     setIsSubmitting(true);
 
-    const responseData = {
-      ...proposal,
-      status: responseType === 'accept' ? 'accepted' : 'rejected',
-      response: responseType,
-      reason: reason,
-      respondedAt: new Date().toISOString()
-    };
+    try {
+      const { error } = await supabase
+        .from('proposals')
+        .update({
+          status: responseType === 'accept' ? 'accepted' : 'rejected',
+          response_message: reason,
+          responded_at: new Date().toISOString()
+        })
+        .eq('id', proposal.id);
 
-    localStorage.setItem(`proposal_${proposalId}`, JSON.stringify(responseData));
+      if (error) {
+        console.error('Error updating proposal:', error);
+        toast({
+          title: "Error",
+          description: "Failed to send response. Please try again.",
+          variant: "destructive"
+        });
+        return;
+      }
 
-    // Simulate real-time notification
-    setTimeout(() => {
-      setIsSubmitting(false);
+      // Update local state
+      setProposal(prev => ({
+        ...prev,
+        status: responseType === 'accept' ? 'accepted' : 'rejected',
+        reason: reason,
+        respondedAt: new Date().toISOString()
+      }));
+
       toast({
         title: responseType === 'accept' ? "💕 Your Heart Has Spoken!" : "💔 Response Sent with Love",
         description: responseType === 'accept' 
           ? "Your acceptance has been sent! What a beautiful moment of love!"
           : "Your thoughtful response has been sent with love and respect.",
       });
-    }, 2000);
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-100 via-pink-50 to-purple-100 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!proposal) {
+    return <ProposalNotFound onBack={onBack} />;
+  }
 
   if (proposal.status === 'accepted' || proposal.status === 'rejected') {
     return <ProposalResponseComplete proposal={proposal} onBack={onBack} />;

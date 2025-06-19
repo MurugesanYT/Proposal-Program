@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import ProposalLinkHeader from './ProposalLinkHeader';
 import ProposalResponseStatus from './ProposalResponseStatus';
 import ProposalLinkSharing from './ProposalLinkSharing';
@@ -20,29 +21,55 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
   const [currentProposal, setCurrentProposal] = useState(proposalData);
   const { toast } = useToast();
   
-  const proposalUrl = `${window.location.origin}/proposal/${proposalData.partnerName.toLowerCase().replace(/\s+/g, '-')}-${proposalData.id}`;
+  const proposalUrl = `${window.location.origin}/proposal/${proposalData.uniqueSlug || proposalData.partnerName.toLowerCase().replace(/\s+/g, '-')}-${proposalData.id}`;
 
-  // Check for updates to the proposal status every second
+  // Check for updates to the proposal status using Supabase realtime
   useEffect(() => {
-    const checkForUpdates = () => {
-      const updatedData = localStorage.getItem(`proposal_${proposalData.id}`);
-      if (updatedData) {
-        const parsed = JSON.parse(updatedData);
-        if (parsed.status !== currentProposal.status || parsed.reason !== currentProposal.reason) {
-          setCurrentProposal(parsed);
+    const checkForUpdates = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('proposals')
+          .select('*')
+          .eq('id', proposalData.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching proposal updates:', error);
+          return;
+        }
+
+        const updatedProposal = {
+          id: data.id,
+          proposerName: data.proposer_name,
+          partnerName: data.partner_name,
+          proposerGender: data.proposer_gender,
+          partnerGender: data.partner_gender,
+          proposalType: data.proposal_type,
+          customMessage: data.custom_message,
+          createdAt: data.created_at,
+          status: data.status,
+          reason: data.response_message,
+          respondedAt: data.responded_at,
+          uniqueSlug: data.unique_slug
+        };
+
+        if (updatedProposal.status !== currentProposal.status || updatedProposal.reason !== currentProposal.reason) {
+          setCurrentProposal(updatedProposal);
           
           // Show celebration toast when proposal is accepted
-          if (parsed.status === 'accepted' && currentProposal.status !== 'accepted') {
+          if (updatedProposal.status === 'accepted' && currentProposal.status !== 'accepted') {
             toast({
               title: "🎉 AMAZING NEWS! 🎉",
-              description: `${parsed.partnerName} said YES to your ${parsed.proposalType === 'marriage' ? 'marriage proposal' : 'love declaration'}!`,
+              description: `${updatedProposal.partnerName} said YES to your ${updatedProposal.proposalType === 'marriage' ? 'marriage proposal' : 'love declaration'}!`,
             });
           }
         }
+      } catch (error) {
+        console.error('Error checking for updates:', error);
       }
     };
 
-    const interval = setInterval(checkForUpdates, 1000);
+    const interval = setInterval(checkForUpdates, 3000); // Check every 3 seconds
     return () => clearInterval(interval);
   }, [proposalData.id, currentProposal.status, currentProposal.reason, toast]);
 

@@ -17,16 +17,10 @@ const Index = () => {
     console.log('Proposal slug:', proposalSlug);
     
     if (proposalSlug) {
-      // Extract the ID from the slug (format: "name-name-123456")
-      const lastDashIndex = proposalSlug.lastIndexOf('-');
-      if (lastDashIndex !== -1) {
-        const id = proposalSlug.substring(lastDashIndex + 1);
-        console.log('Extracted proposal ID:', id);
-        setProposalId(id);
-        setCurrentView('proposal');
-      } else {
-        console.log('Invalid proposal slug format:', proposalSlug);
-      }
+      // Use the full slug as the ID for database lookup
+      console.log('Using proposal slug as ID:', proposalSlug);
+      setProposalId(proposalSlug);
+      setCurrentView('proposal');
     } else {
       setCurrentView('form');
     }
