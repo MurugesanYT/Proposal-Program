@@ -49,7 +49,8 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
           partner_gender: partnerGender,
           proposal_type: proposalType,
           custom_message: customMessage || null,
-          status: 'pending'
+          status: 'pending',
+          unique_slug: 'temp' // This will be overridden by the database trigger
         })
         .select()
         .single();
