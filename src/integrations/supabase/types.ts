@@ -37,7 +37,7 @@ export type Database = {
           responded_at?: string | null
           response_message?: string | null
           status?: string
-          unique_slug: string
+          unique_slug?: string
           updated_at?: string
         }
         Update: {
