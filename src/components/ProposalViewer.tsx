@@ -22,6 +22,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
   const [reason, setReason] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -31,16 +32,22 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
   const fetchProposal = async () => {
     try {
       setIsLoading(true);
+      setNotFound(false);
       
-      // Try to fetch by unique_slug first
+      console.log('Fetching proposal with ID/slug:', proposalId);
+      
+      // First try to fetch by unique_slug
       let { data, error } = await supabase
         .from('proposals')
         .select('*')
         .eq('unique_slug', proposalId)
         .maybeSingle();
 
-      // If not found by slug, try by id
-      if (!data && !error) {
+      console.log('Fetch by unique_slug result:', { data, error });
+
+      // If not found by slug and proposalId looks like a UUID, try by id
+      if (!data && !error && proposalId.length === 36 && proposalId.includes('-')) {
+        console.log('Trying to fetch by ID as fallback');
         const result = await supabase
           .from('proposals')
           .select('*')
@@ -49,32 +56,41 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
         
         data = result.data;
         error = result.error;
+        console.log('Fetch by ID result:', { data, error });
       }
 
       if (error) {
         console.error('Error fetching proposal:', error);
+        setNotFound(true);
         return;
       }
 
-      if (data) {
-        const proposalData = {
-          id: data.id,
-          proposerName: data.proposer_name,
-          partnerName: data.partner_name,
-          proposerGender: data.proposer_gender,
-          partnerGender: data.partner_gender,
-          proposalType: data.proposal_type,
-          customMessage: data.custom_message,
-          createdAt: data.created_at,
-          status: data.status,
-          reason: data.response_message,
-          respondedAt: data.responded_at,
-          uniqueSlug: data.unique_slug
-        };
-        setProposal(proposalData);
+      if (!data) {
+        console.log('No proposal found for ID/slug:', proposalId);
+        setNotFound(true);
+        return;
       }
+
+      console.log('Proposal found:', data);
+
+      const proposalData = {
+        id: data.id,
+        proposerName: data.proposer_name,
+        partnerName: data.partner_name,
+        proposerGender: data.proposer_gender,
+        partnerGender: data.partner_gender,
+        proposalType: data.proposal_type,
+        customMessage: data.custom_message,
+        createdAt: data.created_at,
+        status: data.status,
+        reason: data.response_message,
+        respondedAt: data.responded_at,
+        uniqueSlug: data.unique_slug
+      };
+      setProposal(proposalData);
     } catch (error) {
       console.error('Unexpected error fetching proposal:', error);
+      setNotFound(true);
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +154,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
     );
   }
 
-  if (!proposal) {
+  if (notFound || !proposal) {
     return <ProposalNotFound onBack={onBack} />;
   }
 
