@@ -34,20 +34,22 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
       setIsLoading(true);
       setNotFound(false);
       
-      console.log('Fetching proposal with ID/slug:', proposalId);
+      console.log('ProposalViewer: Fetching proposal with ID/slug:', proposalId);
+      console.log('ProposalViewer: Current window location:', window.location.href);
       
       // First try to fetch by unique_slug
+      console.log('ProposalViewer: Attempting to fetch by unique_slug');
       let { data, error } = await supabase
         .from('proposals')
         .select('*')
         .eq('unique_slug', proposalId)
         .maybeSingle();
 
-      console.log('Fetch by unique_slug result:', { data, error });
+      console.log('ProposalViewer: Fetch by unique_slug result:', { data, error, proposalId });
 
       // If not found by slug and proposalId looks like a UUID, try by id
-      if (!data && !error && proposalId.length === 36 && proposalId.includes('-')) {
-        console.log('Trying to fetch by ID as fallback');
+      if (!data && !error && proposalId.length >= 32 && proposalId.includes('-')) {
+        console.log('ProposalViewer: Trying to fetch by ID as fallback');
         const result = await supabase
           .from('proposals')
           .select('*')
@@ -56,22 +58,55 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
         
         data = result.data;
         error = result.error;
-        console.log('Fetch by ID result:', { data, error });
+        console.log('ProposalViewer: Fetch by ID result:', { data, error });
+      }
+
+      // If still not found, try a more flexible approach - search for partial matches
+      if (!data && !error) {
+        console.log('ProposalViewer: Trying flexible search approach');
+        
+        // Extract the last 8 characters if it looks like it might contain a UUID fragment
+        const possibleUuidFragment = proposalId.split('-').pop();
+        if (possibleUuidFragment && possibleUuidFragment.length >= 8) {
+          console.log('ProposalViewer: Searching by UUID fragment:', possibleUuidFragment);
+          const result = await supabase
+            .from('proposals')
+            .select('*')
+            .like('id', `%${possibleUuidFragment}%`)
+            .limit(1)
+            .maybeSingle();
+          
+          data = result.data;
+          error = result.error;
+          console.log('ProposalViewer: UUID fragment search result:', { data, error });
+        }
+      }
+
+      // If still not found, log all proposals to debug
+      if (!data && !error) {
+        console.log('ProposalViewer: No proposal found, fetching all proposals for debugging');
+        const allProposals = await supabase
+          .from('proposals')
+          .select('id, unique_slug, partner_name, proposer_name')
+          .limit(10);
+        
+        console.log('ProposalViewer: Available proposals:', allProposals.data);
+        console.log('ProposalViewer: Looking for:', proposalId);
       }
 
       if (error) {
-        console.error('Error fetching proposal:', error);
+        console.error('ProposalViewer: Database error:', error);
         setNotFound(true);
         return;
       }
 
       if (!data) {
-        console.log('No proposal found for ID/slug:', proposalId);
+        console.log('ProposalViewer: No proposal found for ID/slug:', proposalId);
         setNotFound(true);
         return;
       }
 
-      console.log('Proposal found:', data);
+      console.log('ProposalViewer: Proposal found successfully:', data);
 
       const proposalData = {
         id: data.id,
@@ -89,7 +124,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
       };
       setProposal(proposalData);
     } catch (error) {
-      console.error('Unexpected error fetching proposal:', error);
+      console.error('ProposalViewer: Unexpected error fetching proposal:', error);
       setNotFound(true);
     } finally {
       setIsLoading(false);
@@ -101,6 +136,8 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
     setIsSubmitting(true);
 
     try {
+      console.log('ProposalViewer: Submitting response:', responseType, 'for proposal:', proposal.id);
+      
       const { error } = await supabase
         .from('proposals')
         .update({
@@ -111,7 +148,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
         .eq('id', proposal.id);
 
       if (error) {
-        console.error('Error updating proposal:', error);
+        console.error('ProposalViewer: Error updating proposal:', error);
         toast({
           title: "Error",
           description: "Failed to send response. Please try again.",
@@ -119,6 +156,8 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
         });
         return;
       }
+
+      console.log('ProposalViewer: Response submitted successfully');
 
       // Update local state
       setProposal(prev => ({
@@ -135,7 +174,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
           : "Your thoughtful response has been sent with love and respect.",
       });
     } catch (error) {
-      console.error('Unexpected error:', error);
+      console.error('ProposalViewer: Unexpected error:', error);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",

@@ -19,14 +19,39 @@ interface ProposalLinkProps {
 
 const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm, onViewProposal }) => {
   const [currentProposal, setCurrentProposal] = useState(proposalData);
+  const [proposalUrl, setProposalUrl] = useState('');
   const { toast } = useToast();
-  
-  const proposalUrl = `${window.location.origin}/proposal/${proposalData.uniqueSlug || proposalData.partnerName.toLowerCase().replace(/\s+/g, '-')}-${proposalData.id}`;
+
+  // Update the proposal URL when the proposal data changes
+  useEffect(() => {
+    console.log('ProposalLink: Setting up proposal URL with data:', currentProposal);
+    
+    if (currentProposal.uniqueSlug) {
+      const url = `${window.location.origin}/proposal/${currentProposal.uniqueSlug}`;
+      console.log('ProposalLink: Generated URL with unique slug:', url);
+      setProposalUrl(url);
+    } else {
+      // Fallback URL construction - this should rarely be used now
+      const fallbackSlug = `${currentProposal.partnerName.toLowerCase().replace(/\s+/g, '-')}-${currentProposal.id.substring(0, 8)}`;
+      const url = `${window.location.origin}/proposal/${fallbackSlug}`;
+      console.log('ProposalLink: Generated fallback URL:', url);
+      setProposalUrl(url);
+      
+      // Show a warning that we're using fallback
+      toast({
+        title: "URL Generated",
+        description: "Using fallback URL generation. Please ensure the link works correctly.",
+        variant: "destructive"
+      });
+    }
+  }, [currentProposal, toast]);
 
   // Check for updates to the proposal status using Supabase realtime
   useEffect(() => {
     const checkForUpdates = async () => {
       try {
+        console.log('ProposalLink: Checking for updates for proposal ID:', proposalData.id);
+        
         const { data, error } = await supabase
           .from('proposals')
           .select('*')
@@ -34,9 +59,11 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
           .single();
 
         if (error) {
-          console.error('Error fetching proposal updates:', error);
+          console.error('ProposalLink: Error fetching proposal updates:', error);
           return;
         }
+
+        console.log('ProposalLink: Fetched updated proposal data:', data);
 
         const updatedProposal = {
           id: data.id,
@@ -54,6 +81,7 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
         };
 
         if (updatedProposal.status !== currentProposal.status || updatedProposal.reason !== currentProposal.reason) {
+          console.log('ProposalLink: Proposal status changed from', currentProposal.status, 'to', updatedProposal.status);
           setCurrentProposal(updatedProposal);
           
           // Show celebration toast when proposal is accepted
@@ -65,7 +93,7 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
           }
         }
       } catch (error) {
-        console.error('Error checking for updates:', error);
+        console.error('ProposalLink: Error checking for updates:', error);
       }
     };
 
@@ -74,6 +102,8 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
   }, [proposalData.id, currentProposal.status, currentProposal.reason, toast]);
 
   const shareLink = async () => {
+    console.log('ProposalLink: Attempting to share URL:', proposalUrl);
+    
     if (navigator.share) {
       try {
         await navigator.share({
@@ -81,11 +111,23 @@ const ProposalLink: React.FC<ProposalLinkProps> = ({ proposalData, onBackToForm,
           text: `${currentProposal.partnerName}, you have a very special message waiting for you! 💕`,
           url: proposalUrl,
         });
+        console.log('ProposalLink: Successfully shared via native share');
       } catch (err) {
+        console.log('ProposalLink: Native share failed, falling back:', err);
         // Fallback handled in ProposalLinkSharing component
       }
+    } else {
+      console.log('ProposalLink: Native share not available');
     }
   };
+
+  if (!proposalUrl) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-teal-50 to-blue-100 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-teal-50 to-blue-100 flex items-center justify-center p-4">
