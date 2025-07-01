@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProposalFormContainer from '@/components/ProposalFormContainer';
 import ProposalForm from '@/components/ProposalForm';
 import ProposalViewer from '@/components/ProposalViewer';
+import ProposalLink from '@/components/ProposalLink';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Star, Crown, Gem, Sparkles, Gift, Users, Trophy, Zap, Rainbow, Coffee, Music, Camera, Book, Palette, Rocket, Globe, Sun, Moon, Flower, Diamond, Bug, Feather, Shield, Key, Clock, MapPin, Phone, Mail, Calendar, Award, Target, Lightbulb, Briefcase } from 'lucide-react';
@@ -11,6 +12,7 @@ import { Heart, Star, Crown, Gem, Sparkles, Gift, Users, Trophy, Zap, Rainbow, C
 const Index = () => {
   const { proposalSlug } = useParams();
   const [showViewer, setShowViewer] = useState(false);
+  const [showLink, setShowLink] = useState(false);
   const [proposalData, setProposalData] = useState(null);
 
   React.useEffect(() => {
@@ -24,9 +26,21 @@ const Index = () => {
 
   const handleProposalCreated = (data: any) => {
     setProposalData(data);
-    setShowViewer(true);
+    setShowLink(true); // Show the link sharing page first
   };
 
+  const handleViewProposal = (proposalId: string) => {
+    setShowViewer(true);
+    setShowLink(false);
+  };
+
+  const handleBackToForm = () => {
+    setShowLink(false);
+    setShowViewer(false);
+    setProposalData(null);
+  };
+
+  // If we have a proposal slug in the URL, show the viewer
   if (showViewer && proposalSlug) {
     return (
       <ProposalViewer 
@@ -36,7 +50,8 @@ const Index = () => {
     );
   }
 
-  if (showViewer && proposalData) {
+  // If we're showing the viewer for a newly created proposal
+  if (showViewer && proposalData && !proposalSlug) {
     return (
       <ProposalViewer 
         proposalId={proposalData.uniqueSlug} 
@@ -44,6 +59,17 @@ const Index = () => {
           setShowViewer(false);
           setProposalData(null);
         }} 
+      />
+    );
+  }
+
+  // If we're showing the link sharing page
+  if (showLink && proposalData) {
+    return (
+      <ProposalLink 
+        proposalData={proposalData}
+        onBackToForm={handleBackToForm}
+        onViewProposal={handleViewProposal}
       />
     );
   }
