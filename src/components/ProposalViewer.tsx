@@ -21,6 +21,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [showResponseForm, setShowResponseForm] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -164,6 +165,9 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
         reason: reason,
         respondedAt: new Date().toISOString()
       }));
+
+      // Keep the response form visible permanently
+      setShowResponseForm(true);
 
       toast({
         title: responseType === 'accept' ? "💕 Your Heart Has Spoken!" : "💔 Response Sent with Love",
@@ -375,6 +379,40 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
                 <div>
                   <h4 className="text-xl font-bold text-gray-800 mb-2">💖 Forever</h4>
                   <p className="text-gray-600">A lifetime of love, laughter, and endless adventures together...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* New Dev Branding Section */}
+          <div className="bg-gradient-to-r from-gray-900 via-purple-900 to-indigo-900 p-10 rounded-3xl border-3 border-purple-400 shadow-2xl">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-white mb-4">💻 Crafted with Passion 💻</h3>
+              <p className="text-xl text-purple-200">This magical experience was created with love and dedication</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-purple-300/30">
+              <div className="text-center">
+                <div className="text-5xl mb-4">👨‍💻</div>
+                <h4 className="text-2xl font-bold text-white mb-3">Developed & Designed by</h4>
+                <a 
+                  href="https://www.instagram.com/_fan_boi_lm10_/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 hover:from-purple-300 hover:via-pink-300 hover:to-red-300 transition-all duration-300 transform hover:scale-110 inline-block cursor-pointer"
+                >
+                  M.Kabilan ✨
+                </a>
+                <p className="text-purple-200 mt-4 text-lg">Full Stack Developer | UI/UX Designer | Love Story Creator</p>
+                <div className="flex justify-center gap-4 mt-6">
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full">
+                    <span className="text-white font-bold">React</span>
+                  </div>
+                  <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-3 rounded-full">
+                    <span className="text-white font-bold">TypeScript</span>
+                  </div>
+                  <div className="bg-gradient-to-r from-green-500 to-teal-500 p-3 rounded-full">
+                    <span className="text-white font-bold">Supabase</span>
+                  </div>
                 </div>
               </div>
             </div>
