@@ -9,7 +9,7 @@ import ProposalResponseComplete from './ProposalResponseComplete';
 import ProposalHeader from './ProposalHeader';
 import ProposalMessage from './ProposalMessage';
 import ProposalResponseSection from './ProposalResponseSection';
-import { Heart, Star, Crown, Gem, Sparkles, Gift, MessageCircle, Users, Lightbulb, Trophy, Zap, Rainbow, Coffee, Music, Camera, Book, Palette, Rocket, Globe, Sun, Moon, Flower, Diamond, Bug, Feather, Shield, Key } from 'lucide-react';
+import { Heart, Star, Crown, Gem, Sparkles, Gift, MessageCircle, Users, Lightbulb, Trophy, Zap, Rainbow, Coffee, Music, Camera, Book, Palette, Rocket, Globe, Sun, Moon, Flower, Diamond, Bug, Feather, Shield, Key, Droplets } from 'lucide-react';
 
 interface ProposalViewerProps {
   proposalId: string;
