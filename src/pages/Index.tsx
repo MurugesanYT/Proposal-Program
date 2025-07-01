@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProposalFormContainer from '@/components/ProposalFormContainer';
+import ProposalForm from '@/components/ProposalForm';
 import ProposalViewer from '@/components/ProposalViewer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import { Heart, Star, Crown, Gem, Sparkles, Gift, Users, Trophy, Zap, Rainbow, C
 const Index = () => {
   const { proposalSlug } = useParams();
   const [showViewer, setShowViewer] = useState(false);
+  const [proposalData, setProposalData] = useState(null);
 
   React.useEffect(() => {
     console.log('Current path:', window.location.pathname);
@@ -20,11 +22,28 @@ const Index = () => {
     }
   }, [proposalSlug]);
 
+  const handleProposalCreated = (data: any) => {
+    setProposalData(data);
+    setShowViewer(true);
+  };
+
   if (showViewer && proposalSlug) {
     return (
       <ProposalViewer 
         proposalId={proposalSlug} 
         onBack={() => setShowViewer(false)} 
+      />
+    );
+  }
+
+  if (showViewer && proposalData) {
+    return (
+      <ProposalViewer 
+        proposalId={proposalData.uniqueSlug} 
+        onBack={() => {
+          setShowViewer(false);
+          setProposalData(null);
+        }} 
       />
     );
   }
@@ -44,11 +63,10 @@ const Index = () => {
       </div>
 
       <div className="relative z-10">
-        <ProposalFormContainer>
-          <div id="proposal-form">
-            {/* Add your form content here */}
-          </div>
-        </ProposalFormContainer>
+        {/* Proposal Form Section */}
+        <div id="proposal-form" className="py-20">
+          <ProposalForm onProposalCreated={handleProposalCreated} />
+        </div>
         
         {/* Hero Section with Enhanced Animations */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
