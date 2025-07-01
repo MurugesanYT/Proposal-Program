@@ -5,7 +5,7 @@ import ProposalFormContainer from '@/components/ProposalFormContainer';
 import ProposalViewer from '@/components/ProposalViewer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Heart, Star, Crown, Gem, Sparkles, Gift, Users, Trophy, Zap, Rainbow, Coffee, Music, Camera, Book, Palette, Rocket, Globe, Sun, Moon, Flower, Diamond, Butterfly, Feather, Shield, Key, Clock, MapPin, Phone, Mail, Calendar, Award, Target, Lightbulb, Briefcase } from 'lucide-react';
+import { Heart, Star, Crown, Gem, Sparkles, Gift, Users, Trophy, Zap, Rainbow, Coffee, Music, Camera, Book, Palette, Rocket, Globe, Sun, Moon, Flower, Diamond, Bug, Feather, Shield, Key, Clock, MapPin, Phone, Mail, Calendar, Award, Target, Lightbulb, Briefcase } from 'lucide-react';
 
 const Index = () => {
   const { proposalSlug } = useParams();
@@ -44,7 +44,11 @@ const Index = () => {
       </div>
 
       <div className="relative z-10">
-        <ProposalFormContainer />
+        <ProposalFormContainer>
+          <div id="proposal-form">
+            {/* Add your form content here */}
+          </div>
+        </ProposalFormContainer>
         
         {/* Hero Section with Enhanced Animations */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

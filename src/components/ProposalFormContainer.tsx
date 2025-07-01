@@ -2,7 +2,7 @@
 import React from 'react';
 
 interface ProposalFormContainerProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const ProposalFormContainer: React.FC<ProposalFormContainerProps> = ({ children }) => {
@@ -14,7 +14,12 @@ const ProposalFormContainer: React.FC<ProposalFormContainerProps> = ({ children 
       </div>
       
       <div className="w-full max-w-2xl relative z-10 shadow-2xl border-0 bg-white/80 backdrop-blur-sm rounded-lg">
-        {children}
+        {children || (
+          <div className="p-8 text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Create Your Magical Proposal</h2>
+            <p className="text-gray-600">Start your love story here...</p>
+          </div>
+        )}
       </div>
     </div>
   );

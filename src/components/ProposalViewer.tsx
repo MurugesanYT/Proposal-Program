@@ -9,7 +9,7 @@ import ProposalResponseComplete from './ProposalResponseComplete';
 import ProposalHeader from './ProposalHeader';
 import ProposalMessage from './ProposalMessage';
 import ProposalResponseSection from './ProposalResponseSection';
-import { Heart, Star, Crown, Gem, Sparkles, Gift, MessageCircle, Users, Lightbulb, Trophy, Zap, Rainbow, Coffee, Music, Camera, Book, Palette, Rocket, Globe, Sun, Moon, Flower, Diamond, Butterfly, Feather, Shield, Key } from 'lucide-react';
+import { Heart, Star, Crown, Gem, Sparkles, Gift, MessageCircle, Users, Lightbulb, Trophy, Zap, Rainbow, Coffee, Music, Camera, Book, Palette, Rocket, Globe, Sun, Moon, Flower, Diamond, Bug, Feather, Shield, Key } from 'lucide-react';
 
 interface ProposalViewerProps {
   proposalId: string;
@@ -451,7 +451,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
               <div className="bg-gradient-to-r from-cyan-50 via-blue-50 to-indigo-50 p-12 rounded-3xl border-3 border-cyan-200 shadow-2xl">
                 <div className="text-center mb-10">
                   <h3 className="text-5xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-4">
-                    <Fountain className="w-12 h-12 text-blue-500" />
+                    <Droplets className="w-12 h-12 text-blue-500" />
                     ⛲ Magical Wish Fountain ⛲
                     <Sparkles className="w-12 h-12 text-cyan-500 animate-pulse" />
                   </h3>
@@ -498,7 +498,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
                     <p className="text-sm text-gray-600">May you always have the key to each other's hearts</p>
                   </div>
                   <div className="bg-white/90 p-6 rounded-2xl border-2 border-purple-200 shadow-lg text-center transform hover:scale-105 transition-all duration-300">
-                    <Butterfly className="w-8 h-8 text-purple-500 mx-auto mb-3 animate-pulse" />
+                    <Bug className="w-8 h-8 text-purple-500 mx-auto mb-3 animate-pulse" />
                     <h4 className="font-bold text-gray-800 mb-2">Wish for Growth</h4>
                     <p className="text-sm text-gray-600">May your love transform and grow like butterflies</p>
                   </div>
