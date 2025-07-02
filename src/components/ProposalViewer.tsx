@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import ProposalNotFound from './ProposalNotFound';
@@ -9,7 +8,6 @@ import ProposalResponseComplete from './ProposalResponseComplete';
 import ProposalHeader from './ProposalHeader';
 import ProposalMessage from './ProposalMessage';
 import ProposalResponseSection from './ProposalResponseSection';
-import { Heart, Star, Crown, Gem, Sparkles, Gift, MessageCircle, Users, Lightbulb, Trophy, Zap, Rainbow, Coffee, Music, Camera, Book, Palette, Rocket, Globe, Sun, Moon, Flower, Diamond, Bug, Feather, Shield, Key, Droplets } from 'lucide-react';
 
 interface ProposalViewerProps {
   proposalId: string;
@@ -23,7 +21,6 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [showResponseForm, setShowResponseForm] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -168,9 +165,6 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
         respondedAt: new Date().toISOString()
       }));
 
-      // Keep the response form visible permanently
-      setShowResponseForm(true);
-
       toast({
         title: responseType === 'accept' ? "💕 Your Heart Has Spoken!" : "💔 Response Sent with Love",
         description: responseType === 'accept' 
@@ -192,10 +186,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-100 via-pink-50 to-purple-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-2xl font-bold text-purple-600 animate-pulse">Loading your magical moment... ✨</p>
-        </div>
+        <div className="w-8 h-8 border-2 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -219,12 +210,13 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
         <div className="absolute bottom-10 right-10 w-20 h-20 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-pulse"></div>
       </div>
 
-      <Card className="w-full max-w-7xl relative z-10 shadow-2xl border-0 bg-white/98 backdrop-blur-sm">
+      <Card className="w-full max-w-5xl relative z-10 shadow-2xl border-0 bg-white/98 backdrop-blur-sm">
         <ProposalHeader proposal={proposal} />
 
-        <CardContent className="p-12">
-          <div className="text-center space-y-10 mb-12">
+        <CardContent className="p-12 space-y-12">
+          <div className="text-center space-y-10">
             <ProposalMessage proposal={proposal} />
+
             <ProposalResponseSection
               proposal={proposal}
               response={response}
@@ -235,219 +227,194 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
             />
           </div>
 
-          <Tabs defaultValue="proposal" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-r from-pink-100 to-purple-100 border-2 border-pink-200 rounded-2xl p-2">
-              <TabsTrigger value="proposal" className="text-lg font-bold text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-400 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl transition-all duration-300">
-                💕 Magical Proposal Experience
-              </TabsTrigger>
-              <TabsTrigger value="success-stories" className="text-lg font-bold text-gray-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-400 data-[state=active]:to-blue-500 data-[state=active]:text-white rounded-xl transition-all duration-300">
-                🌟 Beautiful Success Stories
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="proposal" className="space-y-12">
-              {/* Love Energy Visualization */}
-              <div className="bg-gradient-to-r from-red-50 via-pink-50 to-purple-50 p-12 rounded-3xl border-3 border-red-200 shadow-2xl">
-                <div className="text-center mb-10">
-                  <h3 className="text-5xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-4">
-                    <Heart className="w-12 h-12 text-red-500 animate-pulse" />
-                    💖 Love Energy Visualization 💖
-                    <Sparkles className="w-12 h-12 text-purple-500 animate-pulse" />
-                  </h3>
-                  <p className="text-2xl text-gray-600">Feel the magic of this moment pulsing through the universe!</p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-                  <div className="bg-white/90 p-8 rounded-2xl border-2 border-red-200 shadow-xl text-center transform hover:scale-105 transition-all duration-300">
-                    <div className="w-20 h-20 bg-gradient-to-r from-red-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                      <Heart className="w-10 h-10 text-white" />
-                    </div>
-                    <h4 className="text-xl font-bold text-gray-800 mb-3">Pure Love</h4>
-                    <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                      <div className="h-4 bg-gradient-to-r from-red-400 to-pink-500 rounded-full animate-pulse" style={{width: '100%'}}></div>
-                    </div>
-                    <p className="text-gray-600">Maximum intensity detected! 💕</p>
-                  </div>
-                  
-                  <div className="bg-white/90 p-8 rounded-2xl border-2 border-purple-200 shadow-xl text-center transform hover:scale-105 transition-all duration-300">
-                    <div className="w-20 h-20 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                      <Star className="w-10 h-10 text-white" />
-                    </div>
-                    <h4 className="text-xl font-bold text-gray-800 mb-3">Courage</h4>
-                    <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                      <div className="h-4 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-full animate-pulse" style={{width: '95%'}}></div>
-                    </div>
-                    <p className="text-gray-600">Incredible bravery shown! ⭐</p>
-                  </div>
-                  
-                  <div className="bg-white/90 p-8 rounded-2xl border-2 border-yellow-200 shadow-xl text-center transform hover:scale-105 transition-all duration-300">
-                    <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                      <Crown className="w-10 h-10 text-white" />
-                    </div>
-                    <h4 className="text-xl font-bold text-gray-800 mb-3">Romance</h4>
-                    <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                      <div className="h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse" style={{width: '98%'}}></div>
-                    </div>
-                    <p className="text-gray-600">Royal level romance! 👑</p>
-                  </div>
-                  
-                  <div className="bg-white/90 p-8 rounded-2xl border-2 border-green-200 shadow-xl text-center transform hover:scale-105 transition-all duration-300">
-                    <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                      <Gem className="w-10 h-10 text-white" />
-                    </div>
-                    <h4 className="text-xl font-bold text-gray-800 mb-3">Hope</h4>
-                    <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                      <div className="h-4 bg-gradient-to-r from-green-400 to-teal-500 rounded-full animate-pulse" style={{width: '100%'}}></div>
-                    </div>
-                    <p className="text-gray-600">Infinite possibilities ahead! 💎</p>
-                  </div>
-                </div>
-
+          {/* Enhanced Love Stories Section */}
+          <div className="bg-gradient-to-r from-pink-50 via-rose-50 to-purple-50 p-10 rounded-3xl border-3 border-pink-200 shadow-xl">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-gray-800 mb-4">💕 Love Stories Around the World 💕</h3>
+              <p className="text-xl text-gray-600 leading-relaxed">Every love story is unique and magical, just like yours!</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white/80 p-8 rounded-2xl border-2 border-pink-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <div className="text-center">
-                  <div className="inline-flex items-center gap-4 bg-white/90 px-8 py-4 rounded-2xl border-2 border-rainbow shadow-xl">
-                    <Rainbow className="w-8 h-8 text-purple-500 animate-spin" />
-                    <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 animate-pulse">
-                      COSMIC LOVE ENERGY: MAXIMUM LEVEL ACHIEVED! ✨
-                    </span>
-                    <Zap className="w-8 h-8 text-yellow-500 animate-bounce" />
-                  </div>
+                  <div className="text-6xl mb-4">🌹</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-3">The Perfect Moment</h4>
+                  <p className="text-gray-600 leading-relaxed">True love finds its perfect moment when two hearts beat as one, creating memories that last forever.</p>
                 </div>
               </div>
+              <div className="bg-white/80 p-8 rounded-2xl border-2 border-purple-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">💫</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-3">Endless Possibilities</h4>
+                  <p className="text-gray-600 leading-relaxed">When love is real, every day becomes an adventure filled with laughter, joy, and endless possibilities.</p>
+                </div>
+              </div>
+              <div className="bg-white/80 p-8 rounded-2xl border-2 border-red-200 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🎈</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-3">Forever Together</h4>
+                  <p className="text-gray-600 leading-relaxed">The best love stories never end - they continue to grow more beautiful with each passing day.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-              {/* Interactive Love Compass */}
-              <div className="bg-gradient-to-r from-blue-50 via-cyan-50 to-teal-50 p-12 rounded-3xl border-3 border-blue-200 shadow-2xl">
-                <div className="text-center mb-10">
-                  <h3 className="text-5xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-4">
-                    <Globe className="w-12 h-12 text-blue-500 animate-spin" />
-                    🧭 Love Compass Navigation 🧭
-                    <Star className="w-12 h-12 text-yellow-500 animate-pulse" />
-                  </h3>
-                  <p className="text-2xl text-gray-600">Let love guide your heart to the right direction!</p>
-                </div>
-                
-                <div className="relative">
-                  <div className="w-80 h-80 mx-auto relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-spin" style={{animationDuration: '10s'}}></div>
-                    <div className="absolute inset-4 bg-white rounded-full shadow-inner flex items-center justify-center">
-                      <div className="text-center">
-                        <Heart className="w-16 h-16 text-red-500 mx-auto mb-4 animate-pulse" />
-                        <p className="text-xl font-bold text-gray-800">True North</p>
-                        <p className="text-lg text-gray-600">❤️ LOVE ❤️</p>
-                      </div>
-                    </div>
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2">
-                      <div className="w-0 h-0 border-l-4 border-r-4 border-b-8 border-l-transparent border-r-transparent border-b-red-500"></div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10">
-                  <div className="bg-white/90 p-6 rounded-2xl border-2 border-blue-200 shadow-lg text-center">
-                    <Sun className="w-8 h-8 text-yellow-500 mx-auto mb-3 animate-pulse" />
-                    <h4 className="font-bold text-gray-800">North: Hope</h4>
-                    <p className="text-sm text-gray-600">Bright future ahead</p>
-                  </div>
-                  <div className="bg-white/90 p-6 rounded-2xl border-2 border-green-200 shadow-lg text-center">
-                    <Flower className="w-8 h-8 text-green-500 mx-auto mb-3 animate-bounce" />
-                    <h4 className="font-bold text-gray-800">East: Growth</h4>
-                    <p className="text-sm text-gray-600">Love blossoming</p>
-                  </div>
-                  <div className="bg-white/90 p-6 rounded-2xl border-2 border-purple-200 shadow-lg text-center">
-                    <Moon className="w-8 h-8 text-purple-500 mx-auto mb-3 animate-pulse" />
-                    <h4 className="font-bold text-gray-800">South: Dreams</h4>
-                    <p className="text-sm text-gray-600">Magical moments</p>
-                  </div>
-                  <div className="bg-white/90 p-6 rounded-2xl border-2 border-orange-200 shadow-lg text-center">
-                    <Star className="w-8 h-8 text-orange-500 mx-auto mb-3 animate-spin" />
-                    <h4 className="font-bold text-gray-800">West: Destiny</h4>
-                    <p className="text-sm text-gray-600">Written in stars</p>
-                  </div>
-                </div>
+          {/* Romantic Quotes Section */}
+          <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-rose-50 p-10 rounded-3xl border-3 border-purple-200 shadow-xl">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-gray-800 mb-4">✨ Words of Love ✨</h3>
+              <p className="text-xl text-gray-600">Beautiful words that capture the essence of true love</p>
+            </div>
+            <div className="space-y-8">
+              <div className="bg-white/90 p-8 rounded-2xl border-2 border-purple-200 shadow-inner">
+                <p className="text-2xl text-gray-700 italic text-center leading-relaxed font-light">
+                  "Being deeply loved by someone gives you strength, while loving someone deeply gives you courage."
+                </p>
+                <p className="text-center text-gray-500 mt-4 font-semibold">- Lao Tzu</p>
               </div>
+              <div className="bg-white/90 p-8 rounded-2xl border-2 border-pink-200 shadow-inner">
+                <p className="text-2xl text-gray-700 italic text-center leading-relaxed font-light">
+                  "The best thing to hold onto in life is each other."
+                </p>
+                <p className="text-center text-gray-500 mt-4 font-semibold">- Audrey Hepburn</p>
+              </div>
+              <div className="bg-white/90 p-8 rounded-2xl border-2 border-rose-200 shadow-inner">
+                <p className="text-2xl text-gray-700 italic text-center leading-relaxed font-light">
+                  "Love is not about how many days, months, or years you have been together. Love is about how much you love each other every single day."
+                </p>
+                <p className="text-center text-gray-500 mt-4 font-semibold">- Unknown</p>
+              </div>
+            </div>
+          </div>
 
-              {/* Love Story Timeline */}
-              <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-rose-50 p-12 rounded-3xl border-3 border-purple-200 shadow-2xl">
-                <div className="text-center mb-10">
-                  <h3 className="text-5xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-4">
-                    <Book className="w-12 h-12 text-purple-500 animate-bounce" />
-                    📖 Your Epic Love Story Timeline 📖
-                    <Feather className="w-12 h-12 text-pink-500 animate-pulse" />
-                  </h3>
-                  <p className="text-2xl text-gray-600">Every great love story has beautiful chapters!</p>
-                </div>
-                
-                <div className="relative">
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-purple-400 via-pink-400 to-red-400 rounded-full"></div>
-                  
-                  <div className="space-y-12">
-                    <div className="flex items-center gap-8">
-                      <div className="flex-1 text-right">
-                        <div className="bg-white/90 p-8 rounded-2xl border-2 border-purple-200 shadow-xl">
-                          <h4 className="text-2xl font-bold text-gray-800 mb-3 flex items-center justify-end gap-3">
-                            ✨ The First Spark
-                            <Sparkles className="w-6 h-6 text-purple-500" />
-                          </h4>
-                          <p className="text-gray-600 text-lg">When two souls first recognize the magic between them...</p>
-                        </div>
-                      </div>
-                      <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-2xl z-10">
-                        1
-                      </div>
-                      <div className="flex-1"></div>
-                    </div>
-                    
-                    <div className="flex items-center gap-8">
-                      <div className="flex-1"></div>
-                      <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-red-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-2xl z-10">
-                        2
-                      </div>
-                      <div className="flex-1">
-                        <div className="bg-white/90 p-8 rounded-2xl border-2 border-pink-200 shadow-xl">
-                          <h4 className="text-2xl font-bold text-gray-800 mb-3 flex items-center gap-3">
-                            <Heart className="w-6 h-6 text-red-500" />
-                            💕 Growing Connection
-                          </h4>
-                          <p className="text-gray-600 text-lg">Hearts beating in perfect harmony, creating beautiful memories...</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-8">
-                      <div className="flex-1 text-right">
-                        <div className="bg-white/90 p-8 rounded-2xl border-2 border-yellow-200 shadow-xl">
-                          <h4 className="text-2xl font-bold text-gray-800 mb-3 flex items-center justify-end gap-3">
-                            🌟 This Magical Moment
-                            <Crown className="w-6 h-6 text-yellow-500" />
-                          </h4>
-                          <p className="text-gray-600 text-lg">A brave declaration of love that will echo through eternity...</p>
-                        </div>
-                      </div>
-                      <div className="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-2xl z-10 animate-pulse">
-                        ✨
-                      </div>
-                      <div className="flex-1"></div>
-                    </div>
-                    
-                    <div className="flex items-center gap-8">
-                      <div className="flex-1"></div>
-                      <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-teal-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-2xl z-10">
-                        ∞
-                      </div>
-                      <div className="flex-1">
-                        <div className="bg-white/90 p-8 rounded-2xl border-2 border-green-200 shadow-xl">
-                          <h4 className="text-2xl font-bold text-gray-800 mb-3 flex items-center gap-3">
-                            <Diamond className="w-6 h-6 text-teal-500" />
-                            💎 Forever & Always
-                          </h4>
-                          <p className="text-gray-600 text-lg">A lifetime of adventures, laughter, and unconditional love...</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          {/* Interactive Love Meter */}
+          <div className="bg-gradient-to-r from-red-50 via-pink-50 to-purple-50 p-10 rounded-3xl border-3 border-red-200 shadow-xl">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-gray-800 mb-4">💖 Love Energy Meter 💖</h3>
+              <p className="text-xl text-gray-600">Feel the love radiating from this special moment!</p>
+            </div>
+            <div className="relative">
+              <div className="w-full bg-gray-200 rounded-full h-8 mb-6 overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-pink-400 via-red-400 to-purple-500 rounded-full animate-pulse" style={{width: '100%'}}></div>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 animate-pulse">
+                  MAXIMUM LOVE DETECTED! 💕✨
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Magical Wishes Section */}
+          <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 p-10 rounded-3xl border-3 border-yellow-200 shadow-xl">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-gray-800 mb-4">🌟 Magical Wishes for Your Love 🌟</h3>
+              <p className="text-xl text-gray-600">Beautiful blessings for your journey together</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white/80 p-8 rounded-2xl border-2 border-yellow-200 shadow-lg">
+                <div className="text-center">
+                  <div className="text-5xl mb-4">🌈</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-3">May Your Love Shine</h4>
+                  <p className="text-gray-600 leading-relaxed">Like a rainbow after the storm, may your love bring color and joy to every day of your lives together.</p>
                 </div>
               </div>
-            </TabsContent>
-          </Tabs>
+              <div className="bg-white/80 p-8 rounded-2xl border-2 border-orange-200 shadow-lg">
+                <div className="text-center">
+                  <div className="text-5xl mb-4">🦋</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-3">May You Grow Together</h4>
+                  <p className="text-gray-600 leading-relaxed">Like butterflies emerging from their cocoon, may your love transform and grow more beautiful each day.</p>
+                </div>
+              </div>
+              <div className="bg-white/80 p-8 rounded-2xl border-2 border-red-200 shadow-lg">
+                <div className="text-center">
+                  <div className="text-5xl mb-4">🌺</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-3">May You Bloom</h4>
+                  <p className="text-gray-600 leading-relaxed">Like the most beautiful flowers in spring, may your love bloom eternally in all seasons of life.</p>
+                </div>
+              </div>
+              <div className="bg-white/80 p-8 rounded-2xl border-2 border-pink-200 shadow-lg">
+                <div className="text-center">
+                  <div className="text-5xl mb-4">✨</div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-3">May You Sparkle</h4>
+                  <p className="text-gray-600 leading-relaxed">Like stars in the night sky, may your love continue to sparkle and light up the darkness for each other.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Love Timeline */}
+          <div className="bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 p-10 rounded-3xl border-3 border-indigo-200 shadow-xl">
+            <div className="text-center mb-8">
+              <h3 className="text-4xl font-bold text-gray-800 mb-4">💝 Your Love Journey 💝</h3>
+              <p className="text-xl text-gray-600">Every great love story has beautiful chapters</p>
+            </div>
+            <div className="space-y-6">
+              <div className="flex items-center gap-6 bg-white/80 p-6 rounded-2xl border-2 border-indigo-200 shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">1</div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">✨ The Meeting</h4>
+                  <p className="text-gray-600">When two souls recognize each other for the first time...</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-6 bg-white/80 p-6 rounded-2xl border-2 border-purple-200 shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">2</div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">💕 The Connection</h4>
+                  <p className="text-gray-600">Hearts start beating in perfect synchronization...</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-6 bg-white/80 p-6 rounded-2xl border-2 border-pink-200 shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-red-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">3</div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">🌟 This Moment</h4>
+                  <p className="text-gray-600">A beautiful declaration of love that will be remembered forever...</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-6 bg-white/80 p-6 rounded-2xl border-2 border-red-200 shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-r from-red-400 to-rose-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">∞</div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">💖 Forever</h4>
+                  <p className="text-gray-600">A lifetime of love, laughter, and endless adventures together...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Final Blessing Section */}
+          <div className="text-center pt-10">
+            <div className="bg-gradient-to-r from-gold-50 via-yellow-50 to-orange-50 p-12 rounded-3xl border-3 border-yellow-300 shadow-2xl">
+              <div className="flex justify-center gap-4 mb-6">
+                <span className="text-4xl animate-bounce">⭐</span>
+                <span className="text-4xl animate-pulse">💫</span>
+                <span className="text-4xl animate-bounce">✨</span>
+                <span className="text-4xl animate-pulse">🌟</span>
+                <span className="text-4xl animate-bounce">💖</span>
+              </div>
+              <h3 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 mb-6">
+                This Moment is Pure Magic
+              </h3>
+              <p className="text-2xl text-gray-700 mb-8 leading-relaxed font-light">
+                ✨ You are witnessing something truly special - a moment of pure love, courage, and vulnerability ✨
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="bg-white/70 p-6 rounded-xl border border-yellow-200">
+                  <span className="text-2xl mb-2 block">💝</span>
+                  <p className="text-gray-700 font-semibold">Created with Love</p>
+                </div>
+                <div className="bg-white/70 p-6 rounded-xl border border-orange-200">
+                  <span className="text-2xl mb-2 block">🌟</span>
+                  <p className="text-gray-700 font-semibold">Unique & Personal</p>
+                </div>
+                <div className="bg-white/70 p-6 rounded-xl border border-red-200">
+                  <span className="text-2xl mb-2 block">💕</span>
+                  <p className="text-gray-700 font-semibold">Filled with Hope</p>
+                </div>
+              </div>
+              <p className="text-xl text-gray-600 leading-relaxed">
+                No matter what your heart decides, you are loved, you are special, and you deserve all the happiness in the world 🌈💕
+              </p>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
