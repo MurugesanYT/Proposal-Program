@@ -15,17 +15,17 @@ const ProposalMessage: React.FC<ProposalMessageProps> = ({ proposal }) => {
 
   return (
     <Card className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-4 border-blue-200 shadow-2xl">
-      <CardContent className="p-12">
+      <CardContent className="p-6 md:p-10">
         <div className="text-center space-y-8">
           <div className="flex justify-center gap-4 mb-8">
-            <Quote className="w-12 h-12 text-blue-500 transform -rotate-12" />
-            <Quote className="w-12 h-12 text-purple-500 transform rotate-12" />
+            <Quote className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-blue-500 transform -rotate-12" />
+            <Quote className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-purple-500 transform rotate-12" />
           </div>
-          <h3 className="text-4xl font-bold text-gray-800 mb-8">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-8">
             💝 A Message from the Heart 💝
           </h3>
-          <div className="bg-white/80 p-10 rounded-3xl border-3 border-blue-300 shadow-inner">
-            <p className="text-2xl text-gray-700 leading-relaxed font-light italic">
+          <div className="bg-white/80 p-6 md:p-10 rounded-3xl border-3 border-blue-300 shadow-inner">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed font-light italic">
               "{proposal.customMessage || defaultMessage}"
             </p>
           </div>
