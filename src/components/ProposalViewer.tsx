@@ -4,7 +4,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import ProposalNotFound from './ProposalNotFound';
 import ProposalResponseComplete from './ProposalResponseComplete';
-import ProposalHeader from './proposal/ProposalHeader';
+import ProposalHero from './proposal/ProposalHero';
+import DecorativeBackground from './proposal/DecorativeBackground';
 import ProposalMessage from './proposal/ProposalMessage';
 import ProposalResponseSection from './ProposalResponseSection';
 import ProposalResponseSuccess from './proposal/ProposalResponseSuccess';
@@ -38,6 +39,27 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
   useEffect(() => {
     fetchProposal();
   }, [proposalId]);
+
+  // SEO: dynamic title and description
+  useEffect(() => {
+    if (!proposal) return;
+    const isMarriage = proposal.proposalType === 'marriage';
+    const title = `${isMarriage ? 'Proposal' : 'Love Message'} for ${proposal.partnerName} — From ${proposal.proposerName}`;
+    document.title = title.substring(0, 60);
+
+    const descriptionTag = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
+    const desc = `A heartfelt ${isMarriage ? 'marriage proposal' : 'love declaration'} from ${proposal.proposerName} to ${proposal.partnerName}.`;
+    if (descriptionTag) descriptionTag.content = desc.substring(0, 160);
+
+    const canonicalHref = `${window.location.origin}/${proposal.uniqueSlug || proposalId}`;
+    let linkCanonical = document.querySelector('link[rel="canonical"]');
+    if (!linkCanonical) {
+      linkCanonical = document.createElement('link');
+      linkCanonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(linkCanonical);
+    }
+    linkCanonical.setAttribute('href', canonicalHref);
+  }, [proposal, proposalId]);
 
   const fetchProposal = async () => {
     try {
@@ -216,30 +238,25 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-red-100 via-pink-50 to-purple-100 flex items-center justify-center p-3 sm:p-4 md:p-6">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-32 h-32 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse hidden sm:block"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-red-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse hidden sm:block"></div>
-        <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse hidden sm:block"></div>
-        <div className="absolute top-1/2 right-1/4 w-28 h-28 bg-rose-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-pulse hidden sm:block"></div>
-        <div className="absolute top-10 left-1/2 w-16 h-16 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-60 animate-pulse hidden sm:block"></div>
-        <div className="absolute bottom-10 right-10 w-20 h-20 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-pulse hidden sm:block"></div>
-      </div>
+      <DecorativeBackground />
 
       <Card className="w-full max-w-5xl relative z-10 shadow-2xl border-0 bg-white/98 backdrop-blur-sm">
-        <ProposalHeader proposal={proposal} />
+        <ProposalHero proposal={proposal} />
 
         <CardContent className="p-6 md:p-10 xl:p-12 space-y-8 md:space-y-12">
           <div className="text-center space-y-10">
             <ProposalMessage proposal={proposal} />
 
-            <ProposalResponseSection
-              proposal={proposal}
-              response={response}
-              reason={reason}
-              isSubmitting={isSubmitting}
-              setReason={setReason}
-              handleResponse={handleResponse}
-            />
+            <section id="respond" className="scroll-mt-24">
+              <ProposalResponseSection
+                proposal={proposal}
+                response={response}
+                reason={reason}
+                isSubmitting={isSubmitting}
+                setReason={setReason}
+                handleResponse={handleResponse}
+              />
+            </section>
           </div>
 
           {/* Success Response Display - No timeout */}
@@ -264,6 +281,18 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, onBack }) =
           <FinalBlessing />
         </CardContent>
       </Card>
+      {!response && (
+        <div className="fixed bottom-0 left-0 right-0 sm:hidden z-20 p-3">
+          <div className="mx-auto max-w-lg rounded-xl bg-white/90 backdrop-blur border border-border shadow-lg p-3 flex gap-3">
+            <a href="#respond" className="flex-1">
+              <button className="w-full h-12 rounded-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white font-semibold">Respond</button>
+            </a>
+            <a href="#respond" className="flex-1">
+              <button className="w-full h-12 rounded-lg border border-border bg-background text-foreground font-semibold">View Message</button>
+            </a>
+          </div>
+        </div>
+      )}
     </main>
   );
 };
