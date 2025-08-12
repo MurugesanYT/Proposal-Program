@@ -26,31 +26,31 @@ const ProposalResponseSection: React.FC<ProposalResponseSectionProps> = ({
 
   if (!response) {
     return (
-      <div className="space-y-10">
-        <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-3 border-yellow-300 shadow-xl">
-          <CardContent className="p-8">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-4">
-              <Star className="w-10 h-10 text-yellow-500 animate-pulse" />
-              What is your answer, {proposal.partnerName}?
-              <Star className="w-10 h-10 text-yellow-500 animate-pulse" />
+      <div className="space-y-6 sm:space-y-8 lg:space-y-10 px-2 sm:px-0">
+        <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 sm:border-3 border-yellow-300 shadow-xl">
+          <CardContent className="p-4 sm:p-6 lg:p-8">
+            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-800 mb-3 sm:mb-4 lg:mb-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+              <Star className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-yellow-500 animate-pulse flex-shrink-0" />
+              <span className="text-center break-words">What is your answer, {proposal.partnerName}?</span>
+              <Star className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-yellow-500 animate-pulse flex-shrink-0" />
             </h3>
-            <p className="text-xl text-gray-700 leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed text-center">
               💫 Take a moment to let your heart speak... Your response will be sent to {proposal.proposerName} with all the love and care it deserves 💫
             </p>
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto">
           <Button
             onClick={() => handleResponse('accept')}
             disabled={isSubmitting}
-            className="h-14 sm:h-16 md:h-20 text-xl md:text-2xl font-bold bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 text-white rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-105 border-3 border-green-400"
+            className="h-12 sm:h-14 md:h-16 lg:h-20 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 text-white rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-105 border-2 sm:border-3 border-green-400"
           >
-            <div className="flex items-center gap-4">
-              <CheckCircle className="w-10 h-10" />
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+              <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 flex-shrink-0" />
               <div className="text-center">
-                <div>{isMarriage ? 'YES, I DO! 💍' : 'I LOVE YOU TOO! 💕'}</div>
-                <div className="text-sm font-normal opacity-90">My heart says yes!</div>
+                <div className="leading-tight">{isMarriage ? 'YES, I DO! 💍' : 'I LOVE YOU TOO! 💕'}</div>
+                <div className="text-xs sm:text-sm font-normal opacity-90">My heart says yes!</div>
               </div>
             </div>
           </Button>
@@ -59,20 +59,20 @@ const ProposalResponseSection: React.FC<ProposalResponseSectionProps> = ({
             onClick={() => handleResponse('reject')}
             disabled={isSubmitting}
             variant="outline"
-            className="h-14 sm:h-16 md:h-20 text-xl md:text-2xl font-bold border-3 border-gray-400 hover:border-gray-600 text-gray-700 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-105 bg-white hover:bg-gray-50"
+            className="h-12 sm:h-14 md:h-16 lg:h-20 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold border-2 sm:border-3 border-gray-400 hover:border-gray-600 text-gray-700 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-105 bg-white hover:bg-gray-50"
           >
-            <div className="flex items-center gap-4">
-              <XCircle className="w-10 h-10" />
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+              <XCircle className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 flex-shrink-0" />
               <div className="text-center">
-                <div>I need to decline</div>
-                <div className="text-sm font-normal opacity-70">With love and respect</div>
+                <div className="leading-tight">I need to decline</div>
+                <div className="text-xs sm:text-sm font-normal opacity-70">With love and respect</div>
               </div>
             </div>
           </Button>
         </div>
         
-        <div className="text-center bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-200">
-          <p className="text-lg text-blue-700 font-semibold">
+        <div className="text-center bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-2xl border-2 border-blue-200">
+          <p className="text-sm sm:text-base lg:text-lg text-blue-700 font-semibold">
             💝 Whatever you choose, your honesty and kindness matter most 💝
           </p>
         </div>
@@ -81,15 +81,15 @@ const ProposalResponseSection: React.FC<ProposalResponseSectionProps> = ({
   }
 
   return (
-    <div className="space-y-8 max-w-3xl mx-auto">
-      <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-3 border-indigo-200 shadow-xl">
-        <CardContent className="p-8">
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-3">
-            <MessageCircle className="w-8 h-8 text-indigo-600" />
-            Share your heart with {proposal.proposerName}
-            <Heart className="w-8 h-8 text-pink-500 animate-pulse" />
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8 max-w-3xl mx-auto px-2 sm:px-0">
+      <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-2 sm:border-3 border-indigo-200 shadow-xl">
+        <CardContent className="p-4 sm:p-6 lg:p-8">
+          <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 lg:mb-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+            <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-indigo-600 flex-shrink-0" />
+            <span className="text-center break-words">Share your heart with {proposal.proposerName}</span>
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-pink-500 animate-pulse flex-shrink-0" />
           </h3>
-          <p className="text-base sm:text-lg text-gray-700 mb-6">
+          <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-3 sm:mb-4 lg:mb-6 text-center">
             {response === 'accept' 
               ? "💖 Express your joy, excitement, and love! Let them know how this beautiful moment makes you feel..."
               : "💙 Share your thoughts with kindness and honesty. Your words will help them understand your heart..."}
@@ -103,23 +103,23 @@ const ProposalResponseSection: React.FC<ProposalResponseSectionProps> = ({
         placeholder={response === 'accept' 
           ? "My heart is overflowing with joy! I'm so excited to share this beautiful journey with you..." 
           : "I want to share my thoughts with you honestly and lovingly..."}
-        className="min-h-[120px] sm:min-h-[150px] text-lg sm:text-xl border-3 border-indigo-200 focus:border-indigo-400 rounded-2xl resize-none shadow-lg p-6"
+        className="min-h-[100px] sm:min-h-[120px] lg:min-h-[150px] text-sm sm:text-base lg:text-lg xl:text-xl border-2 sm:border-3 border-indigo-200 focus:border-indigo-400 rounded-2xl resize-none shadow-lg p-3 sm:p-4 lg:p-6"
       />
       
       <Button
         onClick={() => handleResponse(response)}
         disabled={isSubmitting || !reason.trim()}
-        className="w-full h-14 sm:h-16 text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 text-white rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-105"
+        className="w-full h-12 sm:h-14 lg:h-16 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 text-white rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-105"
       >
         {isSubmitting ? (
-          <div className="flex items-center gap-4">
-            <div className="w-8 h-8 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
-            Sending with Love...
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 border-2 sm:border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+            <span>Sending with Love...</span>
           </div>
         ) : (
-          <div className="flex items-center gap-4">
-            <Heart className="w-8 h-8" />
-            Send {response === 'accept' ? 'My Joyful Yes' : 'My Honest Response'} 💕
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8" />
+            <span>Send {response === 'accept' ? 'My Joyful Yes' : 'My Honest Response'} 💕</span>
           </div>
         )}
       </Button>

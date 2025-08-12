@@ -27,10 +27,10 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   onPartnerGenderChange
 }) => {
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <div className="space-y-2">
-          <Label htmlFor="proposerName" className="text-lg font-semibold text-gray-700">
+          <Label htmlFor="proposerName" className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700">
             Your Name 💖
           </Label>
           <Input
@@ -38,12 +38,12 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
             value={proposerName}
             onChange={(e) => onProposerNameChange(e.target.value)}
             placeholder="Enter your beautiful name"
-            className="h-12 text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl"
+            className="h-10 sm:h-11 lg:h-12 text-sm sm:text-base lg:text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="partnerName" className="text-lg font-semibold text-gray-700">
+          <Label htmlFor="partnerName" className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700">
             Their Name 💕
           </Label>
           <Input
@@ -51,19 +51,19 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
             value={partnerName}
             onChange={(e) => onPartnerNameChange(e.target.value)}
             placeholder="Your special someone's name"
-            className="h-12 text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl"
+            className="h-10 sm:h-11 lg:h-12 text-sm sm:text-base lg:text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <div className="space-y-2">
-          <Label className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-            <Users className="w-5 h-5" />
+          <Label className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700 flex items-center gap-2">
+            <Users className="w-4 h-4 sm:w-5 sm:h-5" />
             Your Gender
           </Label>
           <Select value={proposerGender} onValueChange={onProposerGenderChange}>
-            <SelectTrigger className="h-12 text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl">
+            <SelectTrigger className="h-10 sm:h-11 lg:h-12 text-sm sm:text-base lg:text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl">
               <SelectValue placeholder="Select your gender" />
             </SelectTrigger>
             <SelectContent>
@@ -75,12 +75,12 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         </div>
         
         <div className="space-y-2">
-          <Label className="text-lg font-semibold text-gray-700 flex items-center gap-2">
-            <Users className="w-5 h-5" />
+          <Label className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700 flex items-center gap-2">
+            <Users className="w-4 h-4 sm:w-5 sm:h-5" />
             Their Gender
           </Label>
           <Select value={partnerGender} onValueChange={onPartnerGenderChange}>
-            <SelectTrigger className="h-12 text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl">
+            <SelectTrigger className="h-10 sm:h-11 lg:h-12 text-sm sm:text-base lg:text-lg border-2 border-pink-200 focus:border-pink-400 rounded-xl">
               <SelectValue placeholder="Select their gender" />
             </SelectTrigger>
             <SelectContent>
@@ -91,7 +91,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
           </Select>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
