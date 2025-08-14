@@ -154,6 +154,30 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onProposalCreated }) => {
               )}
             </Button>
           </form>
+          
+          {/* Developer Branding Footer */}
+          <div className="mt-8 pt-6 border-t border-gray-200/50">
+            <div className="flex flex-col items-center justify-center space-y-2">
+              <a
+                href="https://www.instagram.com/_fan_boi_lm10_/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 hover:text-pink-500 transition-all duration-300 transform hover:scale-105"
+              >
+                <span className="font-medium text-center sm:text-left">
+                  This program was developed by
+                </span>
+                <span className="font-bold text-pink-600 group-hover:text-pink-700 underline decoration-dotted underline-offset-2 text-center">
+                  _fan_boi_lm10_
+                </span>
+              </a>
+              <div className="flex items-center gap-1 text-xs text-gray-400">
+                <Heart className="w-3 h-3 text-pink-400" />
+                <span>Made with love</span>
+                <Heart className="w-3 h-3 text-pink-400" />
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </ProposalFormContainer>
