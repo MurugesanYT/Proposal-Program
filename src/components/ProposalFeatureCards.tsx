@@ -37,43 +37,43 @@ const ProposalFeatureCards: React.FC<ProposalFeatureCardsProps> = ({ proposal, o
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <Card className="border-3 border-emerald-200 bg-gradient-to-br from-emerald-50 to-emerald-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-        <CardContent className="p-8">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
-              <Eye className="w-7 h-7 text-white" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 px-2 sm:px-0">
+      <Card className="border-2 sm:border-3 border-emerald-200 bg-gradient-to-br from-emerald-50 to-emerald-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+        <CardContent className="p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-500 rounded-full flex items-center justify-center">
+              <Eye className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />
             </div>
-            <h4 className="text-xl font-bold text-gray-800">Preview Your Magic</h4>
+            <h4 className="text-lg sm:text-xl font-bold text-gray-800 text-center sm:text-left">Preview Your Magic</h4>
           </div>
-          <p className="text-gray-600 mb-6 text-lg leading-relaxed">
+          <p className="text-gray-600 mb-4 sm:mb-6 text-base sm:text-lg leading-relaxed text-center sm:text-left">
             Experience how your heartfelt {isMarriage ? 'proposal' : 'declaration'} will touch {proposal.partnerName}'s heart
           </p>
           <Button
             onClick={() => onViewProposal(proposal.id)}
-            className="w-full h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-lg font-bold shadow-lg"
+            className="w-full h-12 sm:h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg sm:rounded-xl text-base sm:text-lg font-bold shadow-lg"
           >
-            <Eye className="w-6 h-6 mr-3" />
+            <Eye className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
             Preview Experience
           </Button>
         </CardContent>
       </Card>
 
-      <Card className="border-3 border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-        <CardContent className="p-8">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+      <Card className="border-2 sm:border-3 border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+        <CardContent className="p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center">
               {getStatusIcon()}
             </div>
-            <h4 className="text-xl font-bold text-gray-800">Live Response Tracking</h4>
+            <h4 className="text-lg sm:text-xl font-bold text-gray-800 text-center sm:text-left">Live Response Tracking</h4>
           </div>
-          <p className="text-gray-600 mb-6 text-lg leading-relaxed">
+          <p className="text-gray-600 mb-4 sm:mb-6 text-base sm:text-lg leading-relaxed text-center sm:text-left">
             Get instant updates when your special someone responds
           </p>
-          <div className={`p-4 rounded-xl ${getStatusColor()} border-2`}>
-            <p className="text-lg font-bold flex items-center gap-3">
+          <div className={`p-3 sm:p-4 rounded-lg sm:rounded-xl ${getStatusColor()} border-2`}>
+            <p className="text-base sm:text-lg font-bold flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left">
               {getStatusIcon()}
-              {getStatusText()}
+              <span>{getStatusText()}</span>
             </p>
           </div>
         </CardContent>

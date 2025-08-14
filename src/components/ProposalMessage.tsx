@@ -54,44 +54,46 @@ const ProposalMessage: React.FC<ProposalMessageProps> = ({ proposal }) => {
   };
 
   return (
-    <div className="space-y-8">
-      <Card className="bg-gradient-to-r from-pink-50 via-rose-50 to-purple-50 border-3 border-pink-200 shadow-xl">
-        <CardContent className="p-10">
-          <div className="flex justify-center mb-6">
-            <div className="flex gap-4">
-              <Heart className="w-8 h-8 text-pink-500 animate-pulse" />
-              <Crown className="w-8 h-8 text-purple-600" />
-              <Heart className="w-8 h-8 text-red-500 animate-pulse" />
+    <div className="space-y-4 sm:space-y-6 md:space-y-8 px-2 sm:px-4 md:px-0">
+      <Card className="bg-gradient-to-r from-pink-50 via-rose-50 to-purple-50 border-2 sm:border-3 border-pink-200 shadow-xl">
+        <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10">
+          <div className="flex justify-center mb-4 sm:mb-6">
+            <div className="flex gap-2 sm:gap-3 md:gap-4">
+              <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-pink-500 animate-pulse" />
+              <Crown className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-600" />
+              <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-500 animate-pulse" />
             </div>
           </div>
-          <h2 className="text-3xl font-bold text-gray-800 leading-relaxed mb-8">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 leading-relaxed mb-6 sm:mb-8 text-center px-2">
             {getProposalMessage()}
           </h2>
-          <div className="flex justify-center gap-4 mt-6">
-            <Sparkles className="w-6 h-6 text-yellow-500 animate-pulse" />
-            <Star className="w-6 h-6 text-purple-500 animate-pulse" />
-            <Zap className="w-6 h-6 text-blue-500 animate-pulse" />
+          <div className="flex justify-center gap-3 sm:gap-4 mt-4 sm:mt-6">
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500 animate-pulse" />
+            <Star className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500 animate-pulse" />
+            <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 animate-pulse" />
           </div>
         </CardContent>
       </Card>
       
       {proposal.customMessage && (
-        <Card className="bg-gradient-to-r from-purple-50 via-pink-50 to-rose-50 border-3 border-purple-200 shadow-xl">
-          <CardContent className="p-10">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <MessageCircle className="w-8 h-8 text-purple-600" />
-              <h3 className="text-2xl font-bold text-gray-800">A Personal Message from {proposal.proposerName}</h3>
-              <Heart className="w-8 h-8 text-pink-600 animate-pulse" />
+        <Card className="bg-gradient-to-r from-purple-50 via-pink-50 to-rose-50 border-2 sm:border-3 border-purple-200 shadow-xl">
+          <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+              <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-600" />
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 text-center">
+                A Personal Message from {proposal.proposerName}
+              </h3>
+              <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-pink-600 animate-pulse" />
             </div>
-            <div className="bg-white/80 p-8 rounded-2xl border-2 border-purple-200 shadow-inner">
-              <p className="text-2xl text-gray-700 italic leading-relaxed text-center font-medium">
+            <div className="bg-white/80 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border-2 border-purple-200 shadow-inner">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 italic leading-relaxed text-center font-medium">
                 "{proposal.customMessage}"
               </p>
             </div>
-            <div className="flex justify-center gap-3 mt-6">
-              <Gift className="w-6 h-6 text-green-500" />
-              <span className="text-lg text-gray-600 font-semibold">Written with Love</span>
-              <Gift className="w-6 h-6 text-green-500" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6">
+              <Gift className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
+              <span className="text-base sm:text-lg text-gray-600 font-semibold">Written with Love</span>
+              <Gift className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
             </div>
           </CardContent>
         </Card>
